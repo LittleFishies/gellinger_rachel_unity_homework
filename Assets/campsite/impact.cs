@@ -5,33 +5,47 @@ using UnityEngine;
 public class impact : MonoBehaviour {
 
     private Rigidbody getPhysics;
-    public Renderer matttttt;
-    public float reactionSpeed = 500;
+    public float reactionSpeed = 10;
     private string startingOut = "Try hitting a tent!";
     private string hitHitHit = "ow,";
+    public float objectDamage = 10;
+    public float targetHealth = 100;
 
 	// Use this for initialization
 	void Start () {
-        print(startingOut);
         getPhysics = GetComponent<Rigidbody>();
-        matttttt = GetComponent<Renderer>();
     }
-	
-	// Update is called once per frame
-	void OnCollisionEnter (Collision collider) {
-        if ((collider.gameObject.name == "rock(Clone)") && (gameObject.name == "tent side riggg" || gameObject.name == "tent side lef" || gameObject.name == "tent side lef (1)" || gameObject.name == "tent side riggg (1)"))
-            {
-            print(hitHitHit);
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+
+    void OnCollisionEnter (Collision collision)
+    {
+        if (collision.collider.name == "rock(Clone)")
+        {
             getPhysics.AddForce(Vector3.up * reactionSpeed);
-            Color randoColor = Random.ColorHSV();
-            matttttt.material.SetColor("_Color", randoColor);
-            }
-        // I have no clue why this isn't working like it should - everything is doing this, even the tent sides. 
-        // I have a hunch I'm messing up the operators, but I can't really think how. 
-        if ((collider.gameObject.name == "rock(Clone)") && (gameObject.name != "tent side riggg" || gameObject.name != "tent side lef" || gameObject.name != "tent side lef (1)" || gameObject.name != "tent side riggg (1)"))
+            print(hitHitHit);
+
+            if ((gameObject.name == "Tent Side") || (gameObject.name == "Tent Side (1)") || (gameObject.name == "Tent Side (2)") || (gameObject.name == "Tent Side (3)"))
             {
-            print("why though");
-            Destroy(gameObject);
+                targetHealth = targetHealth - objectDamage;
+                print(targetHealth);
+            }
+
+            else
+            {
+                print("That's not a tent.");
             }
         }
+
+        if (targetHealth <= 0)
+        {
+            Destroy(gameObject);
+            print("You ruined it. Great job.");
+        }
+    }
 }
